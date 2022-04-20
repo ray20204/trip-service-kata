@@ -37,6 +37,18 @@ class User
         $this->friends[] = $user;
     }
 
+    public function isFriend(User $user): bool
+    {
+        $firendName = $user->getName();
+        foreach ($this->getFriends() as $friend) {
+            if ($friend->getName() == $firendName) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function addTrip(Trip $trip)
     {
         $this->trips[] = $trip;
