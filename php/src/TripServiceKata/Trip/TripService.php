@@ -11,9 +11,11 @@ class TripService
     private UserSession $userSession;
 
     public function __construct(
-        UserSession $userSession
+        UserSession $userSession,
+        TripDAO $tripDAO
     ) {
         $this->userSession = $userSession;
+        $this->tripDAO = $tripDAO;
     }
 
     /**
@@ -28,7 +30,7 @@ class TripService
         }
 
         if ($user->isFriend($loggedUser)) {
-            $tripList = TripDAO::findTripsByUser($user);
+            $tripList = $this->tripDAO->findTripsByUser($user);
         }
         return $tripList;
     }
