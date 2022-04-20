@@ -23,18 +23,11 @@ class TripService
     {
         $tripList = [];
         $loggedUser = $this->userSession->getLoggedUser();
-        $isFriend = false;
         if (empty($loggedUser)) {
             throw new UserNotLoggedInException();
         }
 
-        foreach ($user->getFriends() as $friend) {
-            if ($friend == $loggedUser) {
-                $isFriend = true;
-                break;
-            }
-        }
-        if ($isFriend) {
+        if ($user->isFriend($loggedUser)) {
             $tripList = TripDAO::findTripsByUser($user);
         }
         return $tripList;

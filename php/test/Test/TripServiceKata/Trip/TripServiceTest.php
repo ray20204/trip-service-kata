@@ -36,28 +36,22 @@ class TripServiceTest extends TestCase
 
     /**
      * @test
-     * @dataProvider notFriendProvider
      * @testdox $target user with empty friends
      */
-    public function testEmptyFriends(array $friends): void
+    public function testEmptyFriends(): void
     {
         $expected = [];
 
+        $loggedUser = $this->createMock(User::class);
+        $loggedUser->method('getName')
+            ->willReturn('rayray');
         $this->mockSession->method('getLoggedUser')
-            ->willReturn('loggeduser');
-        $this->mockUser->method('getFriends')
-            ->willReturn($friends);
+            ->willReturn($loggedUser);
+        $this->mockUser->method('isFriend')
+            ->willReturn(false);
         $service = new TripService($this->mockSession);
         $actual = $service->getTripsByUser($this->mockUser);
 
         $this->assertEquals($expected, $actual);
-    }
-
-    public function notFriendProvider(): array
-    {
-        return [
-            [[]],
-            [['ray', 'rayray']],
-        ];
     }
 }
